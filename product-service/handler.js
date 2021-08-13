@@ -1,5 +1,6 @@
 'use strict';
 const products = require('./src/get-all-products');
+const productById = require('./src/get-product-by-id');
 /*
 module.exports.hello = async (event) => {
   return {
@@ -19,4 +20,5 @@ module.exports.hello = async (event) => {
 };
 */
 
-module.exports.getAllProducts = products.getAllProductsAPI;
+module.exports.getProductsList = products.getAllProductsAPI;
+module.exports.getProductById = productById.getProductByIdAPI;

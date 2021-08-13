@@ -56,12 +56,20 @@ provider:
 #    - include-me-dir/**
 
 functions:
-  getAllProducts:
-    handler: handler.getAllProducts
+  getProductsList:
+    handler: handler.getProductsList
     events:
       - http:
           path: products
           method: get
+
+  getProductsById:
+    handler: handler.getProductById
+    events:
+      - http:
+          path: productById
+          method: get
+
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
