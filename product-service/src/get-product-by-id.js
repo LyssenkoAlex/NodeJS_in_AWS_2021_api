@@ -10,6 +10,10 @@ const getProductByIdAPI = async (event) => {
     const toReturn = productList.find((x) => x.id === productId);
     return {
         statusCode: 200,
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
         body: JSON.stringify(toReturn)
     }
 }

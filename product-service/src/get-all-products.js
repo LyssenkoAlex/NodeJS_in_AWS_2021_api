@@ -5,6 +5,10 @@ const getAllProductsAPI = async (event) => {
     console.log('Lambda invocation with event', event);
     return {
         statusCode: 200,
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
         body: JSON.stringify(productList)
     }
 }
