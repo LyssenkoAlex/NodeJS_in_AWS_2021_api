@@ -2,7 +2,6 @@ const productList = require('./productList.json');
 
 
 const getAllProductsAPI = async (event) => {
-    console.log('Lambda invocation with event', event);
     return {
         statusCode: 200,
         headers: {

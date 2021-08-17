@@ -4,8 +4,14 @@
   "description": "Product service (API based)",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest handler.test.js"
   },
   "author": "Alexandr Lyssenko",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^27.0.1"
+  },
+  "dependencies": {
+    "jest": "^27.0.6"
+  }
 }

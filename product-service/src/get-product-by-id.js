@@ -4,7 +4,6 @@ const productList = require('./productList.json');
 const getProductByIdAPI = async (event) => {
     let productId
     if (event.queryStringParameters && event.queryStringParameters.productId) {
-        console.log("Received name: " + event.queryStringParameters.productId);
         productId = event.queryStringParameters.productId;
     }
     const toReturn = productList.find((x) => x.id === productId);
