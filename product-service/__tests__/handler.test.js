@@ -3,7 +3,7 @@ const productList = require('../src/productList.json');
 
 
 test('check getProductsList response', async () => {
-    let functionResponse = await handler.getProductsList();
+    let functionResponse = await handler.getAllProducts();
     expect(JSON.parse(functionResponse.body)).toStrictEqual(productList);
 });
 

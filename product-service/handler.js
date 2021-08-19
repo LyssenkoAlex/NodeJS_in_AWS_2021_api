@@ -1,7 +1,7 @@
-'use strict';
-const products = require('./src/get-all-products');
-const productById = require('./src/get-product-by-id');
+import { getProductById } from './src/get-product-by-id.js';
+import { getAllProducts } from './src/get-all-products.js';
 
-
-module.exports.getProductsList = products.getAllProductsAPI;
-module.exports.getProductById = productById.getProductByIdAPI;
+export {
+  getProductById,
+  getAllProducts
+}

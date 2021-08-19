@@ -1,20 +1,17 @@
-const productList = require('./productList.json');
+import productList from './productList.json';
+import {errorResponse, successResponse} from "./utils/responseBuilder";
 
+export const getProductById = async (event) => {
 
-const getProductByIdAPI = async (event) => {
-    let productId
-    if (event.queryStringParameters && event.queryStringParameters.productId) {
-        productId = event.queryStringParameters.productId;
-    }
-    const toReturn = productList.find((x) => x.id === productId);
-    return {
-        statusCode: 200,
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-        },
-        body: JSON.stringify(toReturn)
-    }
-}
+  try {
+    console.log('Lambda invocation with event: ', event);
+    const  productId  = event.pathParameters;
 
-module.exports.getProductByIdAPI = getProductByIdAPI;
+    const product =  productList.find(prd => prd.id === productId);
+    return product ? successResponse(product, 200) : successResponse({ message: "Product not found!!!" }, 404 );
+  }
+  catch (err) {
+    return errorResponse(err, 500)
+  }
+};
+

@@ -1,15 +1,12 @@
-const productList = require('./productList.json');
+import productList from './productList.json';
 
-
-const getAllProductsAPI = async (event) => {
-    return {
-        statusCode: 200,
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-        },
-        body: JSON.stringify(productList)
-    }
-}
-
-module.exports.getAllProductsAPI = getAllProductsAPI;
+export const getAllProducts = async (event) => {
+  console.log('Lambda invocation with event: ', event);
+  // Some logic ...
+  // Don't forget about logging and testing
+  
+  return {
+    statusCode: 200,
+    body: JSON.stringify(productList)
+  };
+};
