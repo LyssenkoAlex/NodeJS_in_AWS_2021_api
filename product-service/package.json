@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Product service (API based)",
   "main": "handler.js",
-  "type": "module",
   "scripts": {
     "package-build": "sls package",
     "deploy:dev": "sls deploy --stage dev",
