@@ -1,12 +1,13 @@
 import productList from './productList.json';
+import {errorResponse, successResponse} from "./utils/responseBuilder";
 
 export const getAllProducts = async (event) => {
-  console.log('Lambda invocation with event: ', event);
-  // Some logic ...
-  // Don't forget about logging and testing
-  
-  return {
-    statusCode: 200,
-    body: JSON.stringify(productList)
-  };
+  console.log('getAllProducts Lambda invocation with event: ', event);
+  try {
+    return productList ? successResponse(productList, 200) : successResponse({ message: "List is empty" }, 404 );
+  }
+  catch (err) {
+    return errorResponse(err, 500)
+  }
+
 };

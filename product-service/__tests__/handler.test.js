@@ -8,7 +8,7 @@ test('check getProductsList response', async () => {
 });
 
 test('check getProductById response', async () => {
-    let functionResponse = await handler.getProductById({queryStringParameters:{productId:'7567ec4b-b10c-48c5-9345-fc73c48a80a2'}});
+    let functionResponse = await handler.getProductById({productId:'7567ec4b-b10c-48c5-9345-fc73c48a80a2'});
     expect(JSON.parse(functionResponse.body)).toStrictEqual(productList[2]);
 });
 
