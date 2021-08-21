@@ -1,4 +1,4 @@
-const handler = require('../handler');
+const handler = require('../handler_by_id');
 const productList = require('../src/productList.json');
 
 

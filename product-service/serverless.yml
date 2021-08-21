@@ -16,18 +16,20 @@ custom:
 
 functions:
   getAllProducts:
-    handler: handler.getAllProducts
+    handler: handler_products.getAllProducts
     events:
       - http:
           path: products
           method: get
+          cord: true
 
   getProductById:
-    handler: handler.getProductById
+    handler: handler_by_id.getProductById
     events:
       - http:
           path: products/{productId}
           method: get
+          cord: true
           request:
             parameters:
               paths:

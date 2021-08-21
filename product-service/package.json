@@ -2,7 +2,7 @@
   "name": "product-service",
   "version": "1.0.0",
   "description": "Product service (API based)",
-  "main": "handler.js",
+  "main": "handler_by_id.js",
   "scripts": {
     "package-build": "sls package",
     "deploy:dev": "sls deploy --stage dev",
