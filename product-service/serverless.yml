@@ -27,7 +27,7 @@ functions:
     handler: handler_by_id.getProductById
     events:
       - http:
-          path: products/{productId}
+          path: product/{productId}
           method: get
           cord: true
           request:
