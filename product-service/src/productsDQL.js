@@ -53,7 +53,10 @@ export const getStockProducts = async (event) => {
 export const getProductById = async (event) => {
     console.log('getProductById Lambda invocation with event: ', event);
     const client = new Client(dbOptions);
+    console.log('client: ', client);
+    console.log('dbOptions: ', dbOptions);
     await client.connect();
+    console.log('client2: ', client);
 
     try {
 
@@ -61,7 +64,7 @@ export const getProductById = async (event) => {
             const  productId  =  event.pathParameters.productId;
             const result = await client.query('SELECT p.* FROM products p  where p.id  = $1', [productId]);
             console.log('result: ', result)
-            return result ? successResponse(result.rows, 200) : successResponse({ message: "Product not found!!!" }, 404 );
+            return result.rows.length === 1 ? successResponse(result.rows, 200) : successResponse({ message: "Product not found!!!" }, 404 );
         }
         else {
             return successResponse({ message: "Parameter is empty" }, 404 );
