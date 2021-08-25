@@ -52,7 +52,7 @@ export const updateProduct = async (event) => {
             [title, description, price, count, id]
         );
         console.log('rows: ', rows)
-        return rows ? successResponse({message:'Record was created'}, 200) : successResponse({ message: "Error happened" }, 404 );
+        return rows ? successResponse({message:'Record was updated'}, 200) : successResponse({ message: "Error happened" }, 404 );
 
     }
     catch (err) {
