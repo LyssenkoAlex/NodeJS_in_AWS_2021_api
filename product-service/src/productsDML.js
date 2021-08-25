@@ -28,8 +28,7 @@ export const createProduct = async (event) => {
             'INSERT INTO products(title, description, price, count) VALUES ($1, $2, $3, $4) RETURNING *',
             [title, description, price, count]
         );
-        console.log('rows: ', rows)
-        return rows ? successResponse({message:'Record was created'}, 200) : successResponse({ message: "Error happened" }, 404 );
+        return rows ? successResponse({message:'Record was created', row_id:rows[0].id}, 200) : successResponse({ message: "Error happened" }, 404 );
 
     }
     catch (err) {
