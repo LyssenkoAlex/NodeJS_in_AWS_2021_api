@@ -1,10 +1,19 @@
 service: product-service
+useDotenv: true
 
 provider:
   name: aws
   runtime: nodejs14.x
   stage: dev
   region: eu-west-1
+  lambdaHashingVersion: 20201221
+  environment:
+    ENV_STAGE: ${opt:stage, 'dev'}
+    PGHOST: ${self:custom.dotenvVars.PGHOST, env:PGHOST, ''}
+    PGUSER: ${self:custom.dotenvVars.PGUSER, env:PGUSER, ''}
+    PGDATABASE: ${self:custom.dotenvVars.PGDATABASE, env:PGDATABASE, ''}
+    PGPASSWORD: ${self:custom.dotenvVars.PGPASSWORD, env:PGPASSWORD, ''}
+    PGPORT: ${self:custom.dotenvVars.PGPORT, env:PGPORT, ''}
 
 plugins:
   - serverless-webpack
@@ -16,20 +25,60 @@ custom:
 
 functions:
   getAllProducts:
-    handler: handler_products.getAllProducts
+    handler: handler_dql.getAllProducts
     events:
       - http:
           path: products
           method: get
-          cord: true
+          cors: true
+
+  getStockProducts:
+    handler: handler_dql.getStockProducts
+    events:
+      - http:
+          path: products/stock
+          method: get
+          cors: true
 
   getProductById:
-    handler: handler_by_id.getProductById
+    handler: handler_dql.getProductById
     events:
       - http:
           path: product/{productId}
           method: get
-          cord: true
+          cors: true
+          request:
+            parameters:
+              paths:
+                productId: true
+
+  createDbProduct:
+    handler: handler_dml.createProduct
+    events:
+      - http:
+          path: product/create
+          method: post
+          cors: true
+
+  updateProduct:
+    handler: handler_dml.updateProduct
+    events:
+      - http:
+          path: product/update/{productId}
+          method: put
+          cors: true
+          request:
+            parameters:
+              paths:
+                productId: true
+
+  deleteProduct:
+    handler: handler_dml.deleteProduct
+    events:
+      - http:
+          path: product/delete/{productId}
+          method: delete
+          cors: true
           request:
             parameters:
               paths:
