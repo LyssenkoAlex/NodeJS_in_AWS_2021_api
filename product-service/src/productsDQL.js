@@ -16,6 +16,7 @@ const dbOptions = {
     connectionTimeoutMillis:5000
 }
 export const getAllProducts = async (event) => {
+    console.log('getAllProducts event: ', event);
     const client = new Client(dbOptions);
     await client.connect();
     try {
@@ -33,6 +34,7 @@ export const getAllProducts = async (event) => {
 };
 
 export const getStockProducts = async (event) => {
+    console.log('getStockProducts event: ', event);
     const client = new Client(dbOptions);
     await client.connect();
     try {
@@ -53,10 +55,7 @@ export const getStockProducts = async (event) => {
 export const getProductById = async (event) => {
     console.log('getProductById Lambda invocation with event: ', event);
     const client = new Client(dbOptions);
-    console.log('client: ', client);
-    console.log('dbOptions: ', dbOptions);
     await client.connect();
-    console.log('client2: ', client);
 
     try {
 

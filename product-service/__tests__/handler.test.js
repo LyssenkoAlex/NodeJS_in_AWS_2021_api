@@ -29,11 +29,20 @@ test('check getProductById response', async () => {
 
 test('check create record', async () => {
 
-    let functionResponse = await handlerDML.createProduct({body:JSON.stringify({price:'26',description:'test jest create', count:'0', title:'jest'})});
+    let functionResponse = await handlerDML.createProduct({body:JSON.stringify({price:'26',description:'test jest create', count:'2', title:'jest'})});
     expect(JSON.parse(functionResponse.body).message).toStrictEqual(
         "Record was created"
     );
 });
+
+test('check create record fails with Joi', async () => {
+
+    let functionResponse = await handlerDML.createProduct({body:JSON.stringify({description:'test jest create', count:'0', title:'jest'})});
+    expect(JSON.parse(functionResponse.body).message).toStrictEqual(
+        "Record was created"
+    );
+});
+
 
 test('check delete record', async () => {
 

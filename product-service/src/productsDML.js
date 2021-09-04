@@ -1,4 +1,6 @@
 import {errorResponse, successResponse} from "./utils/responseBuilder";
+import {productDataSchema} from "./utils/productSchema";
+const Joi = require('joi');
 
 const {Client} = require('pg')
 
@@ -19,29 +21,46 @@ const dbOptions = {
 
 export const createProduct = async (event) => {
 
-    console.log('event: ', event);
+    console.log('createProduct event: ', event);
     const client = new Client(dbOptions);
     await client.connect();
     const {price, description, title, count} = JSON.parse(event.body);
-    try {
-        const { rows } = await client.query(
-            'INSERT INTO products(title, description, price, count) VALUES ($1, $2, $3, $4) RETURNING *',
-            [title, description, price, count]
-        );
-        return rows ? successResponse({message:'Record was created', row_id:rows[0].id}, 200) : successResponse({ message: "Error happened" }, 404 );
+    const result = productDataSchema.validate(JSON.parse(event.body));
+    console.log('result: ', result);
+    console.log('result.error: ', result.error);
+    if(!result.error) {
+        try {
+            await client.query('BEGIN')
+            const {rows} = await client.query(
+                'INSERT INTO products(title, description, price, count) VALUES ($1, $2, $3, $4) RETURNING *',
+                [title, description, price, count]
+            );
+             await client.query(
+                'INSERT INTO stock(product_id, count) VALUES ($1, $2) RETURNING *',
+                [rows[0].id,  count]
+            );
+            await client.query('COMMIT')
 
-    }
-    catch (err) {
-        return errorResponse(err, 500)
-    }
-    finally {
-        await client.end();
+
+            return rows ? successResponse({
+                message: 'Record was created',
+                row_id: rows[0].id
+            }, 200) : successResponse({message: "Error happened"}, 404);
+
+        } catch (err) {
+            await client.query('ROLLBACK')
+            return errorResponse(err, 500)
+        } finally {
+            await client.end();
+        }
+    } else {
+        successResponse({message: result.error.details[0].message}, 404);
     }
 }
 
 export const updateProduct = async (event) => {
 
-    console.log('event: ', event);
+    console.log('updateProduct event: ', event);
     const client = new Client(dbOptions);
     await client.connect();
     const {id, price, description, title, count} = JSON.parse(event.body);
