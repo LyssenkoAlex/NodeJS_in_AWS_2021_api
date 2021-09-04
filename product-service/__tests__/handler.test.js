@@ -38,8 +38,9 @@ test('check create record', async () => {
 test('check create record fails with Joi', async () => {
 
     let functionResponse = await handlerDML.createProduct({body:JSON.stringify({description:'test jest create', count:'0', title:'jest'})});
+    console.log('functionResponse: ', functionResponse)
     expect(JSON.parse(functionResponse.body).message).toStrictEqual(
-        "Record was created"
+        "\"price\" is required"
     );
 });
 

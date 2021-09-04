@@ -26,8 +26,6 @@ export const createProduct = async (event) => {
     await client.connect();
     const {price, description, title, count} = JSON.parse(event.body);
     const result = productDataSchema.validate(JSON.parse(event.body));
-    console.log('result: ', result);
-    console.log('result.error: ', result.error);
     if(!result.error) {
         try {
             await client.query('BEGIN')
@@ -54,7 +52,8 @@ export const createProduct = async (event) => {
             await client.end();
         }
     } else {
-        successResponse({message: result.error.details[0].message}, 404);
+        console.log('result.error.details: ', result.error.details[0].message)
+        return successResponse({message: result.error.details[0].message}, 400);
     }
 }
 
