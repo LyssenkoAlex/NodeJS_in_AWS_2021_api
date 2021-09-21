@@ -1,0 +1,60 @@
+service: import-service
+frameworkVersion: '2'
+variablesResolutionMode: 20210219
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  region: eu-west-1
+  lambdaHashingVersion: 20201221
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action: ["s3:ListBucket", "s3:PutObject", "s3:PutObjectAcl"]
+      Resource:
+        - "arn:aws:s3:::rsuploaded"
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource:
+        - "arn:aws:s3:::rsuploaded/*"
+plugins:
+  - serverless-webpack
+
+custom:
+  webpack:
+    webpackConfig: 'webpack.config.js'
+    includeModules: true
+
+functions:
+  importProductsFile:
+    handler: handler.importProductsFile
+    events:
+      - http:
+          method: GET
+          path: uploaded
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                name:true
+
+  listProductsFile:
+    handler: handler.getFiles
+    events:
+      - http:
+          method: GET
+          path: view
+          cors: true
+
+  importFileParser:
+    handler: handler.importFileParser
+    events:
+      - s3:
+          bucket: rsuploaded
+          event: s3:ObjectCreated:*
+          rules:
+              - prefix: uploaded/
+          existing: true
