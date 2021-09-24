@@ -9,7 +9,7 @@ const finished = util.promisify(stream.finished);
 
 export const importFileParser = () => async (event) => {
     console.log('start importFileParser')
-    const s3 = new AWS.S3({region: 'us-east-1'});
+    const s3 = new AWS.S3({region: 'eu-west-1'});
 
 
     for (const record of event.Records) {
