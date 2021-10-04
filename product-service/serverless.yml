@@ -15,6 +15,12 @@ provider:
     PGPASSWORD: ${self:custom.dotenvVars.PGPASSWORD, env:PGPASSWORD, ''}
     PGPORT: ${self:custom.dotenvVars.PGPORT, env:PGPORT, ''}
 
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action: "sqs:*"
+      Resource:
+        - Fn::GetAtt: [ SQSQueue, Arn ]
+
 plugins:
   - serverless-webpack
 
@@ -22,6 +28,13 @@ custom:
   webpack:
     webpackConfig: 'webpack.config.js'
     includeModules: true
+
+resources:
+  Resources:
+    SQSQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: importItemsToDB
 
 functions:
   getAllProducts:
@@ -83,3 +96,16 @@ functions:
             parameters:
               paths:
                 productId: true
+
+  catalogBatchProcess:
+    handler: handler_sqs.catalogBatchProcess
+    events:
+      - sqs:
+          batchSize: 5
+          arn:
+            Fn::GetAtt:
+              - SQSQueue
+              - Arn
+
+
+

@@ -12,12 +12,7 @@ provider:
 
   iamRoleStatements:
     - Effect: "Allow"
-      Action: ["s3:ListBucket", "s3:PutObject", "s3:PutObjectAcl"]
-      Resource:
-        - "arn:aws:s3:::rsuploaded"
-    - Effect: "Allow"
-      Action:
-        - "s3:*"
+      Action: "s3:*"
       Resource:
         - "arn:aws:s3:::rsuploaded/*"
 plugins:
@@ -50,11 +45,12 @@ functions:
           cors: true
 
   importFileParser:
-    handler: handler.importFileParser
+    handler: handler.importFileParserD
     events:
       - s3:
           bucket: rsuploaded
           event: s3:ObjectCreated:*
           rules:
               - prefix: uploaded/
+              - suffix: .csv
           existing: true
