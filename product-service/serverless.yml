@@ -14,6 +14,8 @@ provider:
     PGDATABASE: ${self:custom.dotenvVars.PGDATABASE, env:PGDATABASE, ''}
     PGPASSWORD: ${self:custom.dotenvVars.PGPASSWORD, env:PGPASSWORD, ''}
     PGPORT: ${self:custom.dotenvVars.PGPORT, env:PGPORT, ''}
+    SQS_URL:
+      Ref:SQSQueue
 
   iamRoleStatements:
     - Effect: "Allow"
@@ -34,7 +36,7 @@ resources:
     SQSQueue:
       Type: AWS::SQS::Queue
       Properties:
-        QueueName: importItemsToDB
+        QueueName: catalogItemsQueue
 
 functions:
   getAllProducts:
@@ -96,6 +98,15 @@ functions:
             parameters:
               paths:
                 productId: true
+
+  parseProductFile:
+    handler: handler_sqs.parseProductFile
+    events:
+      - http:
+          path: put_file
+          method: get
+          cors: true
+
 
   catalogBatchProcess:
     handler: handler_sqs.catalogBatchProcess
